@@ -14,7 +14,7 @@ class Pessoa extends Model
     protected $fillable=['nome', 'email', 'cidade', 'estado'];
 
     public function hobbies(){
-        return $this->belongsToMany('App\Hobbie','pessoa_hobbie', 'id_pessoa', 'id_hobbie')->orderBy('nome')->get();
+        return $this->belongsToMany('App\Hobbie','pessoa_hobbie', 'id_pessoa', 'id_hobbie');
     }
 
 }

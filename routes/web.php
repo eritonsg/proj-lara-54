@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/pessoas', function(){
+    return \App\Pessoa::with('hobbies')->get();
+});
+
+Route::get('/hobbies', function(){
+    return App\Hobbie::all();
+});

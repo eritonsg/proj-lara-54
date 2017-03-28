@@ -10,7 +10,7 @@ class Hobbie extends Model
     protected $fillable=['nome'];
 
     public function pessoas(){
-        return $this->belongsToMany('App\Pessoa','pessoa_hobbie', 'id_hobbie', 'id_pessoa')->orderBy('nome')->get();
+        return $this->belongsToMany('App\Pessoa','pessoa_hobbie', 'id_hobbie', 'id_pessoa');
     }
 
 }
