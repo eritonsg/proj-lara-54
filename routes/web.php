@@ -12,13 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(Route('cadastro.pessoa.all'));
 });
 
-Route::get('/pessoas', function(){
-    return \App\Pessoa::with('hobbies')->get();
+Route::group(["pref" => "cadastro", "as" => "cadastro."], function(){
+    Route::get('/pessoa/list', 'PessoaController@index')->name('pessoa.all');
+    Route::get('/pessoa/create', 'PessoaController@create')->name('pessoa.create');
+    Route::post('/pessoa/store', 'PessoaController@store')->name('pessoa.store');
+    Route::get('/pessoa/{id}/edit', 'PessoaController@edit')->name('pessoa.edit');
+    Route::post('pessoa/{id}/update', 'PessoaController@update')->name('pessoa.update');
+    Route::get('/pessoa/{id}/delete', 'PessoaController@delete')->name('pessoa.delete');
 });
 
-Route::get('/hobbies', function(){
-    return App\Hobbie::all();
-});
+
