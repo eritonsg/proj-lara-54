@@ -26,6 +26,22 @@
         height:60px;
         padding: 25px;
     }
+
+    .pagination>li>a, .pagination>li>span {
+        color: #5cb85c;
+    }
+
+    .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+        z-index: 3;
+        color: #fff;
+        cursor: default;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .tb-pessoas{
+        margin: 10px 0 0 0;
+    }
 </style>
 
 <nav class="navbar navbar-default">
@@ -67,7 +83,7 @@
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Novo</a>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover tb-pessoas">
                     <thead>
                         <th>Nome</th>
                         <th class="hidden-xs">Email</th>
@@ -112,7 +128,10 @@
                     @endforelse
 
                     </tbody>
-                </table>
+                </table> <!-- Fim table -->
+
+                {{$pessoas->links()}}
+
             </fieldset>
         </div>
     </div>

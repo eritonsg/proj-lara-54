@@ -7,13 +7,14 @@ use App\Pessoa;
 use App\Pessoa_Hobbie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\DB;
 
 class PessoaController extends Controller
 {
 
     public function index(){
-        $lista = Pessoa::all();
-        return view('/cadastro/lista-pessoas', ['pessoas' => $lista]);
+        $pessoas = Pessoa::with('hobbies')->orderBy('nome', 'asc')->paginate(5);
+        return view('/cadastro/lista-pessoas', ['pessoas' => $pessoas]);
     }
 
     public function create(){
@@ -34,15 +35,7 @@ class PessoaController extends Controller
         $campos = $request->all();
         $pessoa = Pessoa::create($campos);
         $hobbies = isset($campos['hobbie']) ? $campos['hobbie'] : [];
-
-        $r = Pessoa_Hobbie::where('id_pessoa',$pessoa->id)->delete();
-
-        foreach($hobbies as $h){
-            $modelo = new Pessoa_Hobbie();
-            $modelo->id_pessoa = $pessoa->id;
-            $modelo->id_hobbie = $h;
-            $modelo->save();
-        }
+        $pessoa->hobbies()->attach($hobbies);
 
         return redirect(Route('cadastro.pessoa.all'));
 
@@ -52,18 +45,10 @@ class PessoaController extends Controller
     public function update(Request $request, $id){
 
         $campos = $request->all();
-        Pessoa::find($id)->update($campos);
-
+        $pessoa = Pessoa::find($id);
+        $pessoa->update($campos);
         $hobbies_request = (isset($campos['hobbie'])) ? $campos['hobbie'] : [];
-
-        Pessoa_Hobbie::where('id_pessoa', $id);
-
-        foreach($hobbies_request as $h){
-            $modelo = new Pessoa_Hobbie();
-            $modelo->id_pessoa = $id;
-            $modelo->id_hobbie = $h;
-            $modelo->save();
-        }
+        $pessoa->hobbies()->sync($hobbies_request);
 
         return redirect(Route('cadastro.pessoa.all'));
     }
